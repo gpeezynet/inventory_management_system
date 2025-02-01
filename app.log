@@ -161,3 +161,4 @@
 2025-02-01 19:30:36,353 INFO:  * Restarting with stat
 2025-02-01 19:30:36,757 WARNING:  * Debugger is active!
 2025-02-01 19:30:36,758 INFO:  * Debugger PIN: 746-690-359
+2025-02-01 19:31:09,309 INFO: 172.19.0.1 - - [01/Feb/2025 19:31:09] "GET / HTTP/1.1" 200 -
