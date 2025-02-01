@@ -116,3 +116,48 @@
 2025-02-01 19:13:01,465 INFO:  * Debugger PIN: 629-183-766
 2025-02-01 19:14:20,919 INFO:  * Detected change in '/app/src/main.py', reloading
 2025-02-01 19:14:20,964 INFO:  * Restarting with stat
+2025-02-01 19:22:41,419 INFO:  * Restarting with stat
+2025-02-01 19:25:57,154 INFO:  * Restarting with stat
+2025-02-01 19:25:57,587 WARNING:  * Debugger is active!
+2025-02-01 19:25:57,588 INFO:  * Debugger PIN: 629-183-766
+2025-02-01 19:26:12,102 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.19.0.2:5000
+2025-02-01 19:26:12,102 INFO: [33mPress CTRL+C to quit[0m
+2025-02-01 19:26:12,103 INFO:  * Restarting with stat
+2025-02-01 19:26:12,516 WARNING:  * Debugger is active!
+2025-02-01 19:26:12,517 INFO:  * Debugger PIN: 105-361-861
+2025-02-01 19:26:16,681 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:16] "[32mGET /reports HTTP/1.1[0m" 302 -
+2025-02-01 19:26:16,705 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:16] "[35m[1mGET /auth/login?next=%2Freports HTTP/1.1[0m" 500 -
+2025-02-01 19:26:16,718 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:16] "GET /auth/login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-02-01 19:26:16,719 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:16] "GET /auth/login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-02-01 19:26:16,733 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:16] "GET /auth/login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-02-01 19:26:16,740 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:16] "[36mGET /auth/login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-02-01 19:26:49,478 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:49] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-02-01 19:26:49,489 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:49] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-02-01 19:26:49,489 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:49] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-02-01 19:26:49,500 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:49] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-02-01 19:26:49,506 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:49] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-02-01 19:26:50,273 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:50] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-02-01 19:26:50,283 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:50] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-02-01 19:26:50,284 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:50] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-02-01 19:26:50,293 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:50] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-02-01 19:26:50,299 INFO: 172.19.0.1 - - [01/Feb/2025 19:26:50] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-02-01 19:27:46,389 INFO: 172.19.0.1 - - [01/Feb/2025 19:27:46] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-02-01 19:27:46,400 INFO: 172.19.0.1 - - [01/Feb/2025 19:27:46] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-02-01 19:27:46,400 INFO: 172.19.0.1 - - [01/Feb/2025 19:27:46] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-02-01 19:27:46,412 INFO: 172.19.0.1 - - [01/Feb/2025 19:27:46] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-02-01 19:27:46,418 INFO: 172.19.0.1 - - [01/Feb/2025 19:27:46] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-02-01 19:30:26,653 INFO:  * Detected change in '/app/src/main.py', reloading
+2025-02-01 19:30:26,698 INFO:  * Restarting with stat
+2025-02-01 19:30:27,123 WARNING:  * Debugger is active!
+2025-02-01 19:30:27,123 INFO:  * Debugger PIN: 105-361-861
+2025-02-01 19:30:36,352 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.19.0.2:5000
+2025-02-01 19:30:36,352 INFO: [33mPress CTRL+C to quit[0m
+2025-02-01 19:30:36,353 INFO:  * Restarting with stat
+2025-02-01 19:30:36,757 WARNING:  * Debugger is active!
+2025-02-01 19:30:36,758 INFO:  * Debugger PIN: 746-690-359
