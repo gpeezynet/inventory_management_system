@@ -2,6 +2,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from config.config import Config
+import csv
+from io import StringIO
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -32,6 +34,55 @@ logging.basicConfig(
 def index():
     inventory = Inventory.query.all()
     return render_template('index.html', inventory=inventory)
+
+# CSV Upload Route
+@app.route('/upload_csv', methods=['POST'])
+def upload_csv():
+    if 'csv_file' not in request.files:
+        flash('No file part', 'error')
+        return redirect(url_for('index'))
+    
+    file = request.files['csv_file']
+    if file.filename == '':
+        flash('No selected file', 'error')
+        return redirect(url_for('index'))
+    
+    try:
+        stream = StringIO(file.stream.read().decode("UTF8"), newline=None)
+        csv_input = csv.DictReader(stream)
+
+        for row in csv_input:
+            # Validate required fields
+            if not row.get('item_name') or not row.get('sku') or not row.get('quantity'):
+                continue  # Skip rows with missing data
+            
+            try:
+                quantity = int(row['quantity'])  # Convert quantity to an integer
+            except ValueError:
+                continue  # Skip rows with invalid quantity
+
+            # Check if item exists
+            existing_item = Inventory.query.filter_by(sku=row['sku']).first()
+            if existing_item:
+                existing_item.quantity += quantity  # Update existing quantity
+            else:
+                new_item = Inventory(
+                    item_name=row['item_name'],
+                    sku=row['sku'],
+                    quantity=quantity
+                )
+                db.session.add(new_item)
+        
+        db.session.commit()
+        flash('CSV processed successfully!', 'success')
+        app.logger.info('CSV file processed successfully')
+
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error processing CSV: {e}', 'error')
+        app.logger.error(f'Error processing CSV: {e}')
+    
+    return redirect(url_for('index'))
 
 # UI Route: Handle adding a new inventory item via form POST
 @app.route('/add_item', methods=['POST'])
@@ -72,23 +123,62 @@ def edit_item(id):
 
 @app.route('/delete_item/<int:id>', methods=['POST'])
 def delete_item(id):
-    # Retrieve the item or return a 404 error if it doesn't exist.
     item = Inventory.query.get_or_404(id)
     try:
-        # Attempt to delete the item from the database.
         db.session.delete(item)
         db.session.commit()
         flash('Item deleted successfully!', 'success')
-        # Log a success message with item details.
         app.logger.info(f'Item deleted: {item.id} - {item.item_name}')
     except Exception as e:
-        # Rollback any changes if there's an error.
         db.session.rollback()
         flash(f'Error deleting item: {e}', 'error')
-        # Log an error message with the exception details.
         app.logger.error(f'Error deleting item {id}: {e}')
-    # Redirect back to the index page.
     return redirect(url_for('index'))
+
+@app.route('/adjust_inventory', methods=['POST'])
+def adjust_inventory():
+    sku = request.form.get('sku')
+    transaction_type = request.form.get('transaction_type')  # 'sale' or 'restock'
+    try:
+        quantity = int(request.form.get('quantity'))
+        if quantity <= 0:
+            raise ValueError("Quantity must be greater than zero.")
+    except ValueError:
+        flash("Invalid quantity entered.", "error")
+        return redirect(url_for('index'))
+
+    item = Inventory.query.filter_by(sku=sku).first()
+    if not item:
+        flash("Item not found.", "error")
+        return redirect(url_for('index'))
+
+    if transaction_type == 'sale' and item.quantity < quantity:
+        flash("Not enough stock available.", "error")
+        return redirect(url_for('index'))
+
+    # Adjust inventory levels
+    if transaction_type == 'sale':
+        item.quantity -= quantity
+    elif transaction_type == 'restock':
+        item.quantity += quantity
+
+    # Log transaction
+    transaction = Transaction(sku=sku, quantity=quantity, transaction_type=transaction_type)
+    db.session.add(transaction)
+
+    try:
+        db.session.commit()
+        flash(f"{transaction_type.capitalize()} recorded successfully!", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error processing transaction: {e}", "error")
+
+    return redirect(url_for('index'))
+
+@app.route('/transactions')
+def transactions():
+    transaction_list = Transaction.query.order_by(Transaction.timestamp.desc()).all()
+    return render_template('transactions.html', transactions=transaction_list)
 
 if __name__ == '__main__':
     app.run()

@@ -60,6 +60,20 @@
     </tbody>
   </table>
 
+  <h2>Adjust Inventory</h2>
+<form method="post" action="{{ url_for('adjust_inventory') }}">
+  <label>SKU: <input type="text" name="sku" required></label><br>
+  <label>Quantity: <input type="number" name="quantity" required></label><br>
+  <label>
+    Transaction Type:
+    <select name="transaction_type">
+      <option value="sale">Sale</option>
+      <option value="restock">Restock</option>
+    </select>
+  </label><br>
+  <button type="submit">Submit</button>
+</form>
+
   <h2>Add New Inventory Item</h2>
   <form method="post" action="{{ url_for('add_item') }}">
     <label>
@@ -76,6 +90,12 @@
     </label><br><br>
     <button type="submit">Add Item</button>
   </form>
+
+<h2>Upload Inventory CSV</h2>
+<form method="post" action="{{ url_for('upload_csv') }}" enctype="multipart/form-data">
+  <input type="file" name="csv_file" accept=".csv" required>
+  <button type="submit">Upload CSV</button>
+</form>
 
   {% if error %}
     <p class="error">{{ error }}</p>
