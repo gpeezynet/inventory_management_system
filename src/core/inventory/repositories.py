@@ -1,4 +1,4 @@
-from src.core/inventory.models import Inventory
+from src.core.inventory.models import Inventory  # Correct
 
 def get_inventory_by_sku(db, sku):
     return Inventory.query.filter_by(sku=sku).first()
