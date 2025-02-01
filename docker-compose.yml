@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  inventory_app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URI=sqlite:///inventory.db
+      - SECRET_KEY=supersecretkey
