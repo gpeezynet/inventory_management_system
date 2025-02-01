@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from config.config import Config
 import csv
 from io import StringIO
+from flask_login import login_required
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -122,17 +123,21 @@ def edit_item(id):
     return render_template('edit_item.html', item=item)
 
 @app.route('/delete_item/<int:id>', methods=['POST'])
+@login_required
 def delete_item(id):
+    if not current_user.is_admin():
+        flash("Access Denied! Only admins can delete inventory items.", "error")
+        return redirect(url_for('index'))
+
     item = Inventory.query.get_or_404(id)
     try:
         db.session.delete(item)
         db.session.commit()
         flash('Item deleted successfully!', 'success')
-        app.logger.info(f'Item deleted: {item.id} - {item.item_name}')
     except Exception as e:
         db.session.rollback()
         flash(f'Error deleting item: {e}', 'error')
-        app.logger.error(f'Error deleting item {id}: {e}')
+
     return redirect(url_for('index'))
 
 @app.route('/adjust_inventory', methods=['POST'])
