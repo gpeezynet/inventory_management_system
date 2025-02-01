@@ -4,7 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from config.config import Config
 import csv
 from io import StringIO
-from flask_login import login_required
+from flask_login import login_required, current_user
+from src.core.transactions.models import Transaction
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -184,6 +185,64 @@ def adjust_inventory():
 def transactions():
     transaction_list = Transaction.query.order_by(Transaction.timestamp.desc()).all()
     return render_template('transactions.html', transactions=transaction_list)
+
+@app.route('/reports')
+@login_required
+def reports():
+    transactions = Transaction.query.order_by(Transaction.timestamp.desc()).all()
+    return render_template('reports.html', transactions=transactions)
+
+import csv
+from flask import Response
+
+@app.route('/export_csv')
+@login_required
+def export_csv():
+    transactions = Transaction.query.order_by(Transaction.timestamp.desc()).all()
+
+    output = []
+    output.append(["ID", "SKU", "Quantity", "Type", "Timestamp"])
+    
+    for transaction in transactions:
+        output.append([transaction.id, transaction.sku, transaction.quantity, transaction.transaction_type, transaction.timestamp])
+
+    # Create CSV response
+    si = StringIO()
+    writer = csv.writer(si)
+    writer.writerows(output)
+    
+    response = Response(si.getvalue(), mimetype="text/csv")
+    response.headers["Content-Disposition"] = "attachment; filename=inventory_report.csv"
+    return response
+
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from io import BytesIO
+
+@app.route('/export_pdf')
+@login_required
+def export_pdf():
+    transactions = Transaction.query.order_by(Transaction.timestamp.desc()).all()
+
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+    pdf.setTitle("Inventory Report")
+
+    pdf.drawString(100, 750, "Inventory Transaction Report")
+    pdf.drawString(100, 735, "----------------------------------")
+
+    y = 720
+    for transaction in transactions:
+        pdf.drawString(100, y, f"ID: {transaction.id}, SKU: {transaction.sku}, Quantity: {transaction.quantity}, Type: {transaction.transaction_type}, Date: {transaction.timestamp}")
+        y -= 15
+
+    pdf.save()
+    buffer.seek(0)
+
+    response = Response(buffer.getvalue(), mimetype='application/pdf')
+    response.headers["Content-Disposition"] = "attachment; filename=inventory_report.pdf"
+    return response
+
 
 if __name__ == '__main__':
     app.run()

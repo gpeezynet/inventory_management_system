@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventory Reports</title>
+</head>
+<body>
+    <h1>Inventory Transaction Reports</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>SKU</th>
+                <th>Quantity</th>
+                <th>Type</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.sku }}</td>
+                <td>{{ transaction.quantity }}</td>
+                <td>{{ transaction.transaction_type }}</td>
+                <td>{{ transaction.timestamp }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">No transactions recorded.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="{{ url_for('export_csv') }}">Download CSV</a> |
+    <a href="{{ url_for('export_pdf') }}">Download PDF</a>
+    <br><br>
+    <a href="{{ url_for('index') }}">Back to Inventory</a>
+</body>
+</html>
