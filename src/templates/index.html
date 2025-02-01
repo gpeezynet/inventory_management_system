@@ -9,10 +9,24 @@
     table { border-collapse: collapse; width: 100%; margin-bottom: 1em; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
     form { margin-bottom: 1em; }
+    .success { color: green; }
+    .error { color: red; }
   </style>
 </head>
 <body>
   <h1>Inventory Management System</h1>
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul>
+        {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
   <h2>Current Inventory</h2>
   <table>
     <thead>
@@ -21,6 +35,7 @@
         <th>Item Name</th>
         <th>SKU</th>
         <th>Quantity</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -30,15 +45,21 @@
         <td>{{ item.item_name }}</td>
         <td>{{ item.sku }}</td>
         <td>{{ item.quantity }}</td>
+        <td>
+          <a href="{{ url_for('edit_item', id=item.id) }}">Edit</a> |
+          <form action="{{ url_for('delete_item', id=item.id) }}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <button type="submit">Delete</button>
+          </form>
+        </td>
       </tr>
       {% else %}
       <tr>
-        <td colspan="4">No items found.</td>
+        <td colspan="5">No items found.</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-  
+
   <h2>Add New Inventory Item</h2>
   <form method="post" action="{{ url_for('add_item') }}">
     <label>
@@ -57,7 +78,7 @@
   </form>
 
   {% if error %}
-    <p style="color:red;">{{ error }}</p>
+    <p class="error">{{ error }}</p>
   {% endif %}
 </body>
 </html>

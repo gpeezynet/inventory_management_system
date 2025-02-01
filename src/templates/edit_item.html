@@ -1,0 +1,28 @@
+<!-- src/templates/edit_item.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Edit Item</title>
+</head>
+<body>
+  <h1>Edit Inventory Item</h1>
+  <form method="post">
+    <label>
+      Item Name:
+      <input type="text" name="item_name" value="{{ item.item_name }}" required>
+    </label><br><br>
+    <label>
+      SKU:
+      <input type="text" name="sku" value="{{ item.sku }}" required>
+    </label><br><br>
+    <label>
+      Quantity:
+      <input type="number" name="quantity" value="{{ item.quantity }}" required>
+    </label><br><br>
+    <button type="submit">Save Changes</button>
+  </form>
+  <br>
+  <a href="{{ url_for('index') }}">Back to Inventory</a>
+</body>
+</html>
