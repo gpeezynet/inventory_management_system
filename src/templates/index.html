@@ -1,0 +1,63 @@
+<!-- src/templates/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Inventory Management System</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 1em; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    form { margin-bottom: 1em; }
+  </style>
+</head>
+<body>
+  <h1>Inventory Management System</h1>
+  <h2>Current Inventory</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Item Name</th>
+        <th>SKU</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in inventory %}
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.item_name }}</td>
+        <td>{{ item.sku }}</td>
+        <td>{{ item.quantity }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4">No items found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <h2>Add New Inventory Item</h2>
+  <form method="post" action="{{ url_for('add_item') }}">
+    <label>
+      Item Name: 
+      <input type="text" name="item_name" required>
+    </label><br><br>
+    <label>
+      SKU: 
+      <input type="text" name="sku" required>
+    </label><br><br>
+    <label>
+      Quantity: 
+      <input type="number" name="quantity" required>
+    </label><br><br>
+    <button type="submit">Add Item</button>
+  </form>
+
+  {% if error %}
+    <p style="color:red;">{{ error }}</p>
+  {% endif %}
+</body>
+</html>
